@@ -1,0 +1,50 @@
+import xlsxwriter
+
+b = [i * 2 for i in range(11)]
+a = [(b[i] ** 2) + b[i]  for i in range(11)]
+c = [(2 * a[i] + 1 + 0.5 * a[i] + 1) for i in range(11)]
+t = [i for i in range(11)]
+
+wb = xlsxwriter.Workbook('Lab5.xlsx')
+worksheet = wb.add_worksheet()
+worksheet.write_column('A1', ["a(b)"])
+worksheet.write_column('B1', ["b(c)"])
+worksheet.write_column('C1', ["c(a)"])
+worksheet.write_column('A2', ["y = x^2 + x"])
+worksheet.write_column('B2', ["y = 2x"])
+worksheet.write_column('C2', ["y = x' + 0.5x + 1"])
+worksheet.write_column('A3', ['Статическая система'])
+worksheet.write_column('B3', ['Линейная система'])
+worksheet.write_column('C3', ['Динамическая система'])
+worksheet.write_column('A4', a)
+worksheet.write_column('B4', b)
+worksheet.write_column('C4', c)
+worksheet.write_column('D4', t)
+
+
+chart = wb.add_chart({'type': 'line'})
+chart.add_series({'name': '=Sheet1!$A$3',
+                  'categories': '=Sheet1!$D$4:$D$14',
+                  'values': '=Sheet1!$A$4:$A$14',
+                  'smooth':     True,})
+
+worksheet.insert_chart('F3', chart)
+
+chart = wb.add_chart({'type': 'line'})
+chart.add_series({'name': '=Sheet1!$B$3',
+                  'categories': '=Sheet1!$D$4:$D$14',
+                  'values': '=Sheet1!$B$4:$B$14',
+                  'smooth':     True,})
+
+worksheet.insert_chart('F19', chart)
+
+chart = wb.add_chart({'type': 'line'})
+chart.add_series({'name': '=Sheet1!$C$3',
+                  'categories': '=Sheet1!$D$4:$D$14',
+                  'values': '=Sheet1!$C$4:$C$14',
+                  'smooth':     True,})
+
+worksheet.insert_chart('O3', chart)
+
+wb.close()
+
